@@ -9,19 +9,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var clickPlusButton: UIButton!
+    @IBOutlet private weak var clickPlusButton: UIButton!
     
-    @IBOutlet weak var clickMinusButton: UIButton!
+    @IBOutlet private weak var clickMinusButton: UIButton!
     
-    @IBOutlet weak var clickResetButton: UIButton!
+    @IBOutlet private weak var clickResetButton: UIButton!
     
-    @IBOutlet weak var historyUITextView: UITextView!
+    @IBOutlet private weak var historyUITextView: UITextView!
     
-    @IBOutlet weak var counterLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
     
-    var counter: Int = 0
+    private var counter: Int = 0
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         counterLabel.text = "\(counter)"
@@ -29,34 +29,35 @@ class ViewController: UIViewController {
         historyUITextView.text = "История изменений:"
     }
 
-    @IBAction func buttonPlusDidTap(_ sender: Any) {
+    @IBAction private func buttonPlusDidTap(_ sender: Any) {
         counter += 1
         counterLabel.text = "Значение счётчика: \n \(counter)"
-        historyUITextView.text = historyUITextView.text + "\n [\(Date().printMyFormat())]: значение изменено на +1"
+        historyUITextView.text = historyUITextView.text + "\n [\(Date().dateFormat())]: значение изменено на +1"
     }
     
-    @IBAction func buttonMinusDidTap(_ sender: Any) {
+    @IBAction private func buttonMinusDidTap(_ sender: Any) {
         counter -= 1
         if counter < 0 {
             counter = 0
-            historyUITextView.text = historyUITextView.text + "\n [\(Date().printMyFormat())]: попытка уменьшить значение счётчика ниже 0"
+            historyUITextView.text = historyUITextView.text + "\n [\(Date().dateFormat())]: попытка уменьшить значение счётчика ниже 0"
         }
         counterLabel.text = "Значение счётчика: \n \(counter)"
-        historyUITextView.text = historyUITextView.text + "\n [\(Date().printMyFormat())]: значение изменено на -1"
+        historyUITextView.text = historyUITextView.text + "\n [\(Date().dateFormat())]: значение изменено на -1"
     }
     
-    @IBAction func buttonResetDidTap(_ sender: Any) {
+    @IBAction private func buttonResetDidTap(_ sender: Any) {
         counter = 0
         counterLabel.text = "Значение счётчика: \n \(counter)"
-        historyUITextView.text = historyUITextView.text + "\n [\(Date().printMyFormat())]: значение сброшено"
+        historyUITextView.text = historyUITextView.text + "\n [\(Date().dateFormat())]: значение сброшено"
     }
-    
+
 }
 
-extension Date {
-    func printMyFormat() -> String {
+private extension Date {
+    func dateFormat(format: String = "YYYY-MM-DD HH:mm:ss") -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
 }
